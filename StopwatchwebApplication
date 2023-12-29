@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prodigy_infotect_task2</title>
+    <style>
+    body{
+        background-image:url("https://img.freepik.com/premium-photo/close-up-stopwatch-human-hand-timer_488220-73793.jpg?w=900");
+        background-repeat: no-repeat;
+        background-attachment: fixed;  
+        background-size:cover;
+        color: #032a38;
+        text-align: center;
+        font-size: larger;
+    }
+    .stopwatch{
+    display: flexbox;
+    text-align:right;
+    background-color: #6cb7d2;
+    min-width: 470px;
+    min-height: 150px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 70%;
+    padding-bottom: 25px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.338);
+}
+#display {
+    font-size: 3em;
+    margin-bottom: 10px;
+    padding-right: 130px;
+    padding-top: 80px;
+    color: rgb(0, 42, 64);
+}
+
+button {
+    font-style: oblique;
+    font-size: 2em;
+    margin: 5px;
+    width: 25%;
+   background-color:rgb(161, 236, 247);
+    display:inline-block;
+    justify-content: space-around;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    color: #032633;
+}
+#startstop{
+    padding-right: 200px;
+}
+#lapList {
+    list-style: none;
+   font-size: 2em;
+    margin-top: 10px;
+    padding-right: 175px;
+    color:rgb(5, 61, 110);
+}  
+    </style>
+</head>
+<body>  <h1>Stopwatch web Application</h1>
+    <div class="stopwatch">
+
+        <div id="display">00:00:00</div>
+        <button id="startStop" onclick="startStop()">Start</button>
+        <button id="reset" onclick="reset()">Reset</button>
+        <button id="lap" onclick="lap()">Lap</button>
+        <ul id="lapList"></ul>
+    </div>
+    <script>
+        let startTime;
+let running = true;
+let interval;
+
+function startStop() {
+    if (running) {
+        clearInterval(interval);
+        document.getElementById("startStop").innerText = "Start";
+    } else {
+        startTime = new Date().getTime();
+        interval = setInterval(updateDisplay, 1000);
+        document.getElementById("startStop").innerText = "Stop";
+    }
+    running = !running;
+}
+
+function updateDisplay() {
+    const currentTime = new Date().getTime();
+    const elapsedTime = new Date(currentTime - startTime);
+    const hours = elapsedTime.getUTCHours();
+    const minutes = elapsedTime.getUTCMinutes();
+    const seconds = elapsedTime.getUTCSeconds();
+    document.getElementById("display").innerText =
+        formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
+}
+
+function formatTime(time) {
+    return time < 10 ? "0" + time : time;
+}
+
+function reset() {
+    clearInterval(interval);
+    document.getElementById("startStop").innerText = "Start";
+    document.getElementById("display").innerText = "00:00:00";
+    running = false;
+    document.getElementById("lapList").innerHTML = "";
+}
+
+function lap() {
+    const lapTime = document.getElementById("display").innerText;
+    const lapList = document.getElementById("lapList");
+    const lapItem = document.createElement("li");
+    lapItem.innerText = lapTime;
+    lapList.appendChild(lapItem);
+}
+
+    </script>
+</body>
+</html>
